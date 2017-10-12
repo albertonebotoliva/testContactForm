@@ -1,60 +1,109 @@
 var React = require('react'),
 ReactDOM = require('react-dom');
 
-var $ = require ('jquery');
+let NavigationLogo = require('./components/NavigationLogo.react')
+let Jumbotron = require('./components/Jumbotron')
+let ContactForm = require('./components/ContactForm')
 
 
-/*************************************************************
-*************************************************************/
-
-
-var ContactForm = React.createClass({
+var LandingPage = React.createClass({
 
   getInitialState: function () {
-    return {};
+    return {
+      height: undefined,
+      message: "Quand le temps est essentiel pour sauver une vie."
+    }
   },
 
   componentDidMount: function () {
-
+    this.setState({ height: window.innerHeight })
   },
 
   componentWillUnmount: function () {
 
   },
 
-  saveContactInfo:function (data) {
-    $.ajax({
-      url: "/saveContactInfo",
-      dataType: 'json',
-      type: 'POST',
-      data:data,
-      success: function(result) {
-        //YOUR CODE GOES HERE
-      },
-      error: function(xhr, status, err) {
-        //YOUR CODE GOES HERE
-      }
-    });
+
+  getFormConfig: function () {
+    var formArr = {
+      title: "Comment pouvons nous nous améliorer?",
+      button: "Nous t'attendons",
+      fields: [{
+            element: "input",
+            label: "Email address",
+            validation: "A valid Email",
+            
+            attributes: {
+              type: "email",
+              name: "email",
+              placeholder: "Your email",
+              
+              className: "form-control",
+              
+              required: "required",
+              autoFocus: "true"
+            }
+            
+          },
+          {
+            element: "input",
+            label: "Name",
+            validation: "Only letters and spaces",
+            
+            attributes: {
+              type: "text",
+              name: "name",
+              placeholder: "Your name",
+              
+              className: "form-control",
+              
+              required: "required",
+              dataParse: "ucfirst",
+              pattern: "[a-zA-Z ]+"
+            }
+          },
+          {
+            element: "textarea",
+            label: "Message",
+            validation: "Your message cannot be empty",
+            
+            attributes: {
+              name: "message",
+              placeholder: "Some message",
+              
+              className: "form-control",
+              
+              required: "required",
+              rows: "6"
+            }
+          }]
+    }
+
+    return formArr
   },
 
   render: function() {
 
-    //YOUR CODE GOES HERE
+    var formConfig = this.getFormConfig()
 
     return (
-     <div className="jumbotron"></div>
-     );
+      <div className="landingPage">
+        <NavigationLogo />
+        <Jumbotron height={this.state.height} message={this.state.message}>
+          <ContactForm formConfig={formConfig} />
+        </Jumbotron>
+      </div>
+     )
   }
-
-}); 
+})
 
 
 
 
 ReactDOM.render(
-  <ContactForm/>,
+  <LandingPage/>,
   document.getElementById('containerHome')
-  );
+)
 
 
 

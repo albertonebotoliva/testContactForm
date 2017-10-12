@@ -15,8 +15,9 @@
  		},
  		email: {
  			type: 'string',
- 			unique:true,
- 			required: true
+ 			unique:false,
+ 			required: true,
+ 			email: true
  		},
  		name: {
  			type: 'string',
